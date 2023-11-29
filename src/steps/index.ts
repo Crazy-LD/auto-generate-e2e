@@ -1,16 +1,103 @@
-import { Given, When, Then } from "@cucumber/cucumber";
-import { LaunchOptions, chromium, firefox, webkit } from "@playwright/test";
+import { Given, When, Then, After, AfterAll, Before } from "@cucumber/cucumber";
+import { Command, Scenario } from "../interface";
+import { PlayWrightExecutor } from "../executor/playwright";
+const scenarios: Scenario[] = [];
 
-Given('跳转到{string}', async function (url) {
-  chromium.launch({
-    
-  })
+
+let scenario: Scenario | null = null;
+Before(function (params) {
+  scenario = {
+    name: params.pickle.name,
+    steps: [],
+  }
+});
+
+After(function () {
+  if (scenario) {
+    scenarios.push(scenario);
+    scenario = null;
+  }
+});
+
+AfterAll({ timeout: 60 * 1000 }, async function () {
+  await new PlayWrightExecutor(scenarios).start();
 });
 
 
+export enum StepName {
+  Given = 'Given',
+  When = 'When',
+  Then = 'Then',
+}
 
-Scenario: 去百度
-Given 跳转到https://demo.playwright.dev/todomvc
-When 在[placeholder=What needs to be done?]中输入吃饭
-When 按下回车
-When [class=new-todo]的文案为吃饭
+Given('跳转到[{string}]', function (url: string) {
+  scenario?.steps.push({
+    command: Command.Jump,
+    params: [url],
+  })
+})
+
+When('等待[{int}]秒', function (time: string) {
+  scenario?.steps.push({
+    command: Command.Wait,
+    params: [time],
+  })
+})
+
+When('点击元素[{string}]', function (locator: string) {
+  scenario?.steps.push({
+    command: Command.ClickElement,
+    params: [locator],
+  })
+})
+When('点击文案[{string}]', function (text: string) {
+  scenario?.steps.push({
+    command: Command.ClickText,
+    params: [text],
+  })
+})
+When('点击位置[{int}, {int}]', function (x: string, y: string) {
+  scenario?.steps.push({
+    command: Command.ClickPosition,
+    params: [x, y],
+  })
+})
+
+When('在[{string}]中输入[{string}]', function (locator: string, text: string) {
+  scenario?.steps.push({
+    command: Command.InputText,
+    params: [locator, text],
+  });
+
+})
+
+When('在[{string}]按下[{string}]', function (locator: string, key: string) {
+  scenario?.steps.push({
+    command: Command.Press,
+    params: [locator, key],
+  })
+})
+
+Then('存在元素[{string}]', function (locator: string) {
+  scenario?.steps.push({
+    command: Command.ExistElement,
+    params: [locator],
+  })
+})
+
+Then('存在[{string}]的文案', function (text: string) {
+  scenario?.steps.push({
+    command: Command.ExistText,
+    params: [text],
+  })
+})
+
+Then('[{string}]的文案为[{string}]', function (locator: string, text: string) {
+  scenario?.steps.push({
+    command: Command.ElementTextIs,
+    params: [locator, text],
+  })
+})
+
+
+

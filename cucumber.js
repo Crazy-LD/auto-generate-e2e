@@ -5,17 +5,17 @@ module.exports = {
       snippetInterface: "async-await"
     },
     paths: [
-      "src/test/features/"
+      "test/features/"
     ],
     publishQuiet: true,
     dryRun: false,
     require: [
-      "src/test/steps/*.ts",
+      "src/steps/*.ts",
       "src/hooks/hooks.ts"
     ],
     requireModule: [
       "ts-node/register"
     ],
-    parallel: 1
+    parallel: 1,
   }
 }
