@@ -6,6 +6,7 @@ const scenarios: Scenario[] = [];
 
 let scenario: Scenario | null = null;
 Before(function (params) {
+  // 开启page
   scenario = {
     name: params.pickle.name,
     steps: [],
@@ -15,11 +16,13 @@ Before(function (params) {
 After(function () {
   if (scenario) {
     scenarios.push(scenario);
+    // 关闭page
     scenario = null;
   }
 });
 
 AfterAll({ timeout: 60 * 1000 }, async function () {
+  debugger;
   await new PlayWrightExecutor(scenarios).start();
 });
 
@@ -95,6 +98,13 @@ Then('存在[{string}]的文案', function (text: string) {
 Then('[{string}]的文案为[{string}]', function (locator: string, text: string) {
   scenario?.steps.push({
     command: Command.ElementTextIs,
+    params: [locator, text],
+  })
+})
+
+Then('[{string}]的文案包含[{string}]', function (locator: string, text: string) {
+  scenario?.steps.push({
+    command: Command.ElementTextContain,
     params: [locator, text],
   })
 })

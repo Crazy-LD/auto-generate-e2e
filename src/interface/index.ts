@@ -31,6 +31,8 @@ export enum Command {
     InputText = 'inputText',
     /** 元素的文案是 */
     ElementTextIs = 'elementTextIs',
+    /** 元素的文案包含 */
+    ElementTextContain = 'elementTextContain',
     /** 按下 */
     Press = 'press'
 }
