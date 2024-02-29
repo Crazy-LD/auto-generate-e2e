@@ -18,31 +18,29 @@ export class PlayWrightExecutor {
                         await page.goto(String(step.params[0]));
                     },
                     [Command.InputText]: async () => {
-                        await (this.locator(String(step.params[0])))!.fill(String(step.params[1]))
+                        await this.locator(String(step.params[0]))!.fill(String(step.params[1]))
                     },
                     [Command.Press]: async () => {
                         const nameByAlias: Record<string, string> = {
                             "回车": "Enter",
                         }
-                        await (this.locator(String(step.params[0])))!.press(nameByAlias[String(step.params[1])]);
+                        await this.locator(String(step.params[0]))!.press(nameByAlias[String(step.params[1])]);
                     },
                     [Command.ElementTextIs]: async () => {
-                        const selector = await this.locator(String(step.params[0]));
-                        const text = await selector!.innerText();
-                        expect(text).toBe(String(step.params[1]));
+                        await expect(this.locator(String(step.params[0]))).toHaveText(String(step.params[1]));
                     },
                     [Command.ClickText]: async () => {
-                        (await page.getByText(String(step.params[0])).click());
+                        await page.getByText(String(step.params[0])).click();
                     },
                     [Command.ClickElement]: async () => {
-                        this.locator(String(step.params[0])).click();
+                        await this.locator(String(step.params[0])).click();
                     },
                     [Command.ExistElement]: async () => {
                         await expect(this.locator(String(step.params[0]))).toBeVisible();
 
                     },
                     [Command.ElementTextContain]: async () => {
-                        await expect(this.locator(String(step.params[0]))).toContainText((String(step.params[1])));
+                        await expect(this.locator(String(step.params[0]))).toContainText(String(step.params[1]));
                     }
                 }
                 await handlerBy![step.command]!();

@@ -1,3 +1,10 @@
+const requires = [
+  "src/steps/*.ts"
+];
+
+if (process.env['executor'] === 'exec') {
+  requires.push('src/hooks/hooks.ts');
+}
 module.exports = {
   default: {
     tags: process.env.npm_config_TAGS || "",
@@ -9,12 +16,8 @@ module.exports = {
     ],
     publishQuiet: true,
     dryRun: false,
-    require: [
-      "src/steps/*.ts",
-      "src/hooks/hooks.ts"
-    ],
+    require: requires,
     requireModule: [
-      "ts-node/register"
     ],
     parallel: 1,
   }

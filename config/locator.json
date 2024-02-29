@@ -2,7 +2,7 @@
     "账号": "#mat-input-0",
     "密码": "#mat-input-1",
     "账户名": "//button[contains(@class,'mat-focus-indicator mat-menu-trigger')]//span[1]",
-    "登录": ".mat-card-actions button",
-    "退出": "//button[text()='Logout' and @role='menuitem']",
-    "登录链接": "//span[text()='Login']/.."
+    "登录": "mat-card-actions >> internal:role=button[name='Login'i]",
+    "退出": "internal:role=menuitem[name='Logout'i]",
+    "登录链接": "internal:role=button[name='Login'i]"
 }

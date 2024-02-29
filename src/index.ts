@@ -1,11 +1,11 @@
-import { loadConfiguration, loadSources, runCucumber } from '@cucumber/cucumber/api'
+import { loadConfiguration, runCucumber } from '@cucumber/cucumber/api'
 export async function runTests() {
-    const result = await loadConfiguration()
-    debugger;
-    const result2 = await loadSources(result.runConfiguration.sources)
-    debugger;
-    const result3 = await runCucumber(result.runConfiguration)
-    debugger;
-    return null;
+    const configuration = await loadConfiguration({ file: 'cucumber.js' })
+    const result = await runCucumber(configuration.runConfiguration);
+    if (result.success) {
+        console.log('success');
+    } else {
+        console.log('fail');
+    }
 }
 runTests();

@@ -1,6 +1,7 @@
 import { Given, When, Then, After, AfterAll, Before } from "@cucumber/cucumber";
 import { Command, Scenario } from "../interface";
 import { PlayWrightExecutor } from "../executor/playwright";
+import { PlayWrightCodeExecutor } from "../executor/playwright-code";
 const scenarios: Scenario[] = [];
 
 
@@ -22,8 +23,12 @@ After(function () {
 });
 
 AfterAll({ timeout: 60 * 1000 }, async function () {
-  debugger;
-  await new PlayWrightExecutor(scenarios).start();
+  const executor = process.env['executor']
+  if (executor === 'code') {
+    await new PlayWrightCodeExecutor(scenarios).start();
+  } else {
+    await new PlayWrightExecutor(scenarios).start();
+  }
 });
 
 
@@ -95,7 +100,7 @@ Then('存在[{string}]的文案', function (text: string) {
   })
 })
 
-Then('[{string}]的文案为[{string}]', function (locator: string, text: string) {
+Then('[{string}]的文案是[{string}]', function (locator: string, text: string) {
   scenario?.steps.push({
     command: Command.ElementTextIs,
     params: [locator, text],

@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cucumber-js --config=cucumber.js"
+    "test": "cucumber-js --config=cucumber.js",
+    "test:code": "cross-env executor=code ts-node ./src/index.ts",
+    "test:exec": "cross-env executor=exec ts-node ./src/index.ts",
+    "test:code-exec": "playwright test"
   },
   "repository": {
     "type": "git",
@@ -24,6 +27,9 @@
   },
   "dependencies": {
     "@playwright/test": "^1.40.0",
+    "args": "^5.0.3",
+    "chalk": "^5.3.0",
+    "cross-env": "^7.0.3",
     "playwright": "^1.40.0"
   }
 }
